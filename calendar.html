@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calendar</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navigation Buttons -->
+  <div class="nav-buttons">
+    <a href="index.html" class="btn nav-btn">🏠 Home</a>
+    <button onclick="history.back()" class="btn nav-btn">🔙 Back</button>
+  </div>
+
+  <div class="calendar-container">
+    <h2>Work Week Calendar</h2>
+    <div id="calendar"></div>
+  </div>
+
+  <!-- Modal for Event Entry -->
+  <div id="eventModal" class="modal hidden">
+    <div class="modal-content">
+      <span id="closeModal">&times;</span>
+      <h3>New Journey Entry</h3>
+
+      <label>Event Name:</label>
+      <input id="eventName" type="text" />
+
+      <label>Start Location:</label>
+      <select id="startLocation">
+        <option>Fourfields</option>
+        <option>Beeches</option>
+        <option>Newton</option>
+        <option>Elsworth</option>
+        <option>Fen Drayton</option>
+        <option>Pathfinder</option>
+        <option>Swavesy</option>
+        <option>Shirley</option>
+        <option>The Vine</option>
+        <option>Thorndown</option>
+        <option>UoCP</option>
+        <option>Willingham</option>
+        <option>Wyton</option>
+        <option>Sawtry</option>
+        <option>Callum</option>
+        <option>Toby</option>
+        <option>Sam</option>
+      </select>
+
+      <label>End Location:</label>
+      <select id="endLocation">
+        <option>Fourfields</option>
+        <option>Beeches</option>
+        <option>Newton</option>
+        <option>Elsworth</option>
+        <option>Fen Drayton</option>
+        <option>Pathfinder</option>
+        <option>Swavesy</option>
+        <option>Shirley</option>
+        <option>The Vine</option>
+        <option>Thorndown</option>
+        <option>UoCP</option>
+        <option>Willingham</option>
+        <option>Wyton</option>
+        <option>Sawtry</option>
+        <option>Callum</option>
+        <option>Toby</option>
+        <option>Sam</option>
+      </select>
+
+      <label>Purpose:</label>
+      <select id="purpose">
+        <option>On-site IT Work</option>
+        <option>On-site IT Work with Road closure</option>
+        <option>Returning to office</option>
+        <option>Returning to Home</option>
+      </select>
+
+      <label>Journey Type:</label>
+      <select id="journeyType">
+        <option>Other</option>
+        <option>Home to Destination</option>
+        <option>Destination to Home</option>
+      </select>
+
+      <label>Start Time:</label>
+      <input id="startTime" type="time" />
+
+      <label>End Time:</label>
+      <input id="endTime" type="time" />
+
+      <button id="saveEvent">Save</button>
+    </div>
+  </div>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCu3EfNxYBc6GVe9kYK50yqPzky2guEz3w",
+      authDomain: "mileage-calculator-4d31f.firebaseapp.com",
+      projectId: "mileage-calculator-4d31f",
+      storageBucket: "mileage-calculator-4d31f.appspot.com",
+      messagingSenderId: "334943883040",
+      appId: "1:334943883040:web:4e029123b58d1d0db4d145",
+      measurementId: "G-J3DW1X4ZZ7"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+  </script>
+
+  <script src="script.js"></script>
+
+  <!-- Account Icon and Dropdown -->
+  <div class="account-menu">
+    <button class="account-icon" onclick="toggleAccountMenu()">👤</button>
+    <div id="accountDropdown" class="account-dropdown hidden">
+      <p id="accountEmail">Account: </p>
+      <button onclick="changePassword()">Change Password</button>
+      <button onclick="logout()">Log Out</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleAccountMenu() {
+      document.getElementById('accountDropdown').classList.toggle('hidden');
+    }
+
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        alert("Logged out!");
+        window.location.href = "login.html";
+      });
+    }
+
+    function changePassword() {
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        alert("Not logged in.");
+        return;
+      }
+      firebase.auth().sendPasswordResetEmail(user.email).then(() => {
+        alert("Password reset email sent to " + user.email);
+      }).catch(error => {
+        alert("Error: " + error.message);
+      });
+    }
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById("accountEmail").innerText = "Account: " + user.email;
+      }
+    });
+  </script>
+</body>
+</html>

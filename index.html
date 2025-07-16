@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mileage Tracker - Home</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Mileage Tracker</h1>
+    <div class="buttons">
+      <a href="calendar.html" class="btn">Calendar</a>
+      <a href="export.html" class="btn">Export</a>
+    </div>
+  </div>
+
+  <!-- Account Icon and Dropdown -->
+  <div class="account-menu">
+    <button class="account-icon" onclick="toggleAccountMenu()">👤</button>
+    <div id="accountDropdown" class="account-dropdown hidden">
+      <p id="accountEmail">Account: </p>
+      <button onclick="changePassword()">Change Password</button>
+      <button onclick="logout()">Log Out</button>
+    </div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCu3EfNxYBc6GVe9kYK50yqPzky2guEz3w",
+      authDomain: "mileage-calculator-4d31f.firebaseapp.com",
+      projectId: "mileage-calculator-4d31f",
+      storageBucket: "mileage-calculator-4d31f.appspot.com",
+      messagingSenderId: "334943883040",
+      appId: "1:334943883040:web:4e029123b58d1d0db4d145",
+      measurementId: "G-J3DW1X4ZZ7"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    function toggleAccountMenu() {
+      document.getElementById('accountDropdown').classList.toggle('hidden');
+    }
+
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        alert("Logged out!");
+        window.location.href = "login.html";
+      });
+    }
+
+    function changePassword() {
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        alert("Not logged in.");
+        return;
+      }
+      firebase.auth().sendPasswordResetEmail(user.email).then(() => {
+        alert("Password reset email sent to " + user.email);
+      }).catch(error => {
+        alert("Error: " + error.message);
+      });
+    }
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById("accountEmail").innerText = "Account: " + user.email;
+      }
+    });
+  </script>
+</body>
+</html>

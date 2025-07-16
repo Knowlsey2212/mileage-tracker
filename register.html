@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Register</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="nav-buttons">
+    <a href="index.html" class="btn nav-btn">🏠 Home</a>
+    <button onclick="history.back()" class="btn nav-btn">🔙 Back</button>
+  </div>
+
+  <div class="form-container">
+    <h2>Register</h2>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="register()">Register</button>
+    <p>Already have an account? <a href="login.html">Login</a></p>
+  </div>
+
+<!-- ✅ Correct Firebase SDKs for browser use -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCu3EfNxYBc6GVe9kYK50yqPzky2guEz3w",
+      authDomain: "mileage-calculator-4d31f.firebaseapp.com",
+      projectId: "mileage-calculator-4d31f",
+      storageBucket: "mileage-calculator-4d31f.appspot.com",
+      messagingSenderId: "334943883040",
+      appId: "1:334943883040:web:4e029123b58d1d0db4d145",
+      measurementId: "G-J3DW1X4ZZ7"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    const auth = firebase.auth();
+
+    function register() {
+      console.log("Register button clicked");
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          console.log("User registered successfully");
+          alert("Account created!");
+          window.location.href = "calendar.html";
+        })
+        .catch(error => {
+          console.error("Registration error:", error.message);
+          alert("Error: " + error.message);
+        });
+    }
+  </script>
+
+</body>
+</html>

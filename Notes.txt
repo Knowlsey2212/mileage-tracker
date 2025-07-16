@@ -1,0 +1,14 @@
+Where did i get too last time?
+
+Login's now work, users can manually reset passwords if they like, brilliant
+
+Next steps:
+
+- Entries are being saved in gernal, we now want them to be
+    saved based off the user that is signed in
+
+- Add mileage to each school so calculations can now acurtually take place
+
+- Add Week and mon selector and Dates as currently it is just the same week
+
+- Make it so it opens on the most recent working week
